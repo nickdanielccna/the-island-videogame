@@ -1,50 +1,47 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Chapter1
 {
-    
-    public class Detection : MonoBehaviour
-   {
+	
+public class Detection : MonoBehaviour {
 
-    private RaycastHit hit;
-    public LayerMask detectionLayer;
-    private float checkRate = 0.5f;
-    private float nextCheck;
-    private Transform myTransform;
-    private float range = 5;
+	private RaycastHit hit;
+	[SerializeField] private LayerMask detetectionLayer;
+	private float range = 5;
+	private float checkRate = 0.5f;
+	private float nextCheck;
+	private Transform myTransform;
 
+	// Use this for initialization
+	void Start () {
+		SetInitialReferences();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		DetectItems();
+	}
 
+	void SetInitialReferences()
+	{
+		myTransform = transform;
+		detetectionLayer = 1 << 9 | 1 << 8;
+	}
 
+	void DetectItems()
+	{
+		if (Time.time > nextCheck)
+		{
+			nextCheck = Time.time + checkRate;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        SetInitialReferences();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        DetectItems();
-    }
-
-    void SetInitialReferences()
-    {
-        myTransform = transform;
-        detectionLayer = 1 << 9;
-    }
-
-    void DetectItems()
-    {
-        nextCheck = Time.time + checkRate;
-
-        if(Physics.Raycast(myTransform.position,myTransform.forward, out hit,range,detectionLayer))
-        {
-            Debug.Log(hit.transform.name + "is an item");
-        }
-    }
-  }
+			if(Physics.Raycast(myTransform.position, myTransform.forward,out hit,range, detetectionLayer))
+			{
+				Debug.Log(hit.transform.name + "is an item ");
+			}
+		}
+	}
+}
 
 }
